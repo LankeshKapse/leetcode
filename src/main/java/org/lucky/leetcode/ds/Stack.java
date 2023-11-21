@@ -9,8 +9,8 @@ public class Stack<T> {
     private int push_pointer=-1;
     private int pop_pointer=-1;
 
-    public Stack(Class<T> clazz) {
-        this.finite_stack = (T[]) Array.newInstance(clazz, 5);
+    public Stack(Class<T> clazz, int capacity) {
+        this.finite_stack = (T[]) Array.newInstance(clazz, capacity);
     }
 
     public void push(T item){
@@ -18,7 +18,7 @@ public class Stack<T> {
             finite_stack[++push_pointer]=item;
             pop_pointer=push_pointer;
         }catch (ArrayIndexOutOfBoundsException ex){
-            throw new RuntimeException("Stack full");
+            throw new StackExceptions("Stack full");
         }
 
 
@@ -27,7 +27,7 @@ public class Stack<T> {
     public T pop(){
         T item = finite_stack[pop_pointer];
         if(Objects.isNull(item))
-            throw new RuntimeException("No item left");
+            throw new StackExceptions("No item left");
         finite_stack[pop_pointer--]=null;
         push_pointer--;
         return item;
@@ -44,7 +44,7 @@ public class Stack<T> {
 
 
     public static void main(String[] args) {
-        Stack stack = new Stack(Integer.class);
+        Stack stack = new Stack(Integer.class,5);
         stack.push(1);
         stack.push(2);
         stack.push(3);
@@ -62,6 +62,13 @@ public class Stack<T> {
         stack.print();
         stack.push(10);
         stack.print();
+    }
+
+}
+
+class StackExceptions extends RuntimeException{
+    public StackExceptions(String msg) {
+        super(msg);
     }
 
 }
